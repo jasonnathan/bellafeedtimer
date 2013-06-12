@@ -5,7 +5,7 @@ function Timer() {
     self.currentSession = ko.observable(null);
     self.keys = ko.observableArray([], {persist: "keys"});
     self.keys.push(self.key);
-    self.sessions = ko.observableArray(null, {persist: self.key});
+    self.sessions = ko.observableArray([], {persist: self.key});
 
     self.tick = function() {
         self.clock(moment().format(fullDate));
