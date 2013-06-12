@@ -53,6 +53,10 @@ function Timer() {
         return t.sessions.push(cs().toJS()) && cs(null);
     };
 
+    self.exit = function(){
+        return device.exitApp();
+    }
+
     self.add = function(d){
         d && typeof d === moment || (d=moment(d));
 
