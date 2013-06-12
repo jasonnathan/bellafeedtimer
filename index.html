@@ -38,15 +38,15 @@ and open the template in the editor.
                     <div class="center white">
                         <h4 class="bold" data-bind="text: startTime"></h4>
                     </div>
-                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromStart"><i class="icon-minus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromStart, enable:$parent.inSession"><i class="icon-minus"></i> 5m</button>
                 </div>
                 <div class="span6">
                     <strong>Stopped</strong>
                     <div class="center white">
                         <h4 class="bold" data-bind="text: endTime"></h4>
                     </div>
-                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromEnd"><i class="icon-minus"></i> 5m</button>
-                    <button class="btn btn-small btn-warning" data-bind="click: $parent.addToEnd"><i class="icon-plus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromEnd, enable:$parent.inSession"><i class="icon-minus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.addToEnd, enable:$parent.inSession"><i class="icon-plus"></i> 5m</button>
                 </div>
             </div>
             <br>
@@ -63,9 +63,6 @@ and open the template in the editor.
                         </button>
                         <button class="btn btn-large btn-info" disabled="disabled" data-bind="click: save, enable:inSession">
                             <i class="icon-2x icon-save"></i>
-                        </button>
-                        <button class="btn btn-large btn-danger" data-bind="click: exit">
-                            <i class="icon-2x icon-signout"></i>
                         </button>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ function Timer() {
     self.key = moment().format(shortDate);
     self.currentSession = ko.observable(null);
     self.keys = ko.observableArray([], {persist: "keys"});
-    self.keys.push(self.key);
+    //self.keys.push(self.key);
     self.sessions = ko.observableArray([], {persist: self.key});
 
     self.tick = function() {
