@@ -15,6 +15,7 @@ and open the template in the editor.
         <script type="text/javascript" src="js/zepto.min.js"></script>
         <script type="text/javascript" src="js/knockout.min.js"></script>
         <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/knockout.localstorage.js"></script>
         <script type="text/javascript" src="js/bella.js"></script>
     </head>
     <body>
@@ -23,52 +24,72 @@ and open the template in the editor.
                 <div class="pull-left">
 
                 </div>
-                <h3 class="center"><img src="img/bella.png" width="40"> Bella Feed Timer 1.0</h3>
+                <h3 class="center"><img src="img/bella.png" width="40"> Bella Feed Timer</h3>
             </div>
         </div>
         <h4 style="text-align: center" data-bind="text:clock"></h4>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="center"><label class="bold">This feed</label> <p>0 mins</p></div>
+                <div class="center" data-bind="with:currentSession"><label class="bold">This feed</label> <p data-bind="text:duration"></p></div>
             </div>
-            <div class="row-fluid">
+            <div class="row-fluid" data-bind="with:currentSession">
                 <div class="span6">
                     <strong>Started</strong>
                     <div class="center white">
-                        <h4 class="bold">1:23 pm</h4>
+                        <h4 class="bold" data-bind="text: startTime"></h4>
                     </div>
-                    <button class="btn btn-small btn-warning"><i class="icon-minus"></i> 5m</button>
-                    <button class="btn btn-small btn-warning"><i class="icon-plus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromStart"><i class="icon-minus"></i> 5m</button>
                 </div>
                 <div class="span6">
                     <strong>Stopped</strong>
                     <div class="center white">
-                        <h4 class="bold">1:47 pm</h4>
+                        <h4 class="bold" data-bind="text: endTime"></h4>
                     </div>
-                    <button class="btn btn-small btn-warning"><i class="icon-minus"></i> 5m</button>
-                    <button class="btn btn-small btn-warning"><i class="icon-plus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.subtractFromEnd"><i class="icon-minus"></i> 5m</button>
+                    <button class="btn btn-small btn-warning" data-bind="click: $parent.addToEnd"><i class="icon-plus"></i> 5m</button>
                 </div>
             </div>
             <br>
             <div class="row-fluid">
                 <div class="span12">
                     <div class="btn-group">
-                        <button class="btn btn-medium btn-info"><i class="icon-remove icon-2x"></i></button>
-                        <button class="btn btn-large btn-success"><i class="icon-play icon-2x"></i></button>
-                        <button class="btn btn-medium btn-primary"><i class="icon-save icon-2x"></i></button>
+                        <button class="btn btn-large btn-success" data-bind="click: startStop">
+                            <!--ko with: currentSession-->
+                            <i class="icon-2x" data-bind="css:{'icon-play':!recording(), 'icon-stop':recording, active:recording}"></i>
+                            <!--/ko-->
+                            <!--ko ifnot: currentSession-->
+                            <i class="icon-2x icon-play"></i>
+                            <!--/ko-->
+                        </button>
+                        <button class="btn btn-large btn-info" disabled="disabled" data-bind="click: save, enable:inSession">
+                            <i class="icon-2x icon-save"></i>
+                        </button>
                     </div>
                 </div>
             </div>
             <br>
-            <div class="row-fluid clearfix" style="position:absolute;bottom:0;right:0;left:0;">
-                <div class="span12">
-                    <div class="btn-group">
-                        <a class="btn btn-large btn-inverse active" href="#"><i class="icon-circle-blank icon-2x"></i><br>Timer</a>
-                        <a class="btn btn-large btn-inverse" href="#"><i class="icon-list icon-2x"></i><br>Log</a>
-                        <a class="btn btn-large btn-inverse" href="#"><i class="icon-refresh icon-2x"></i><br>Sync</a>
-                    </div>
-                </div>
-            </div>
+            <table class="table table-bordered table-condensed white" data-bind="if:sessions">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach:sessions">
+                    <tr>
+                        <td>
+                            <small data-bind="text: startTime"></small> -
+                            <small data-bind="text: endTime"></small>
+                        </td>
+                        <td data-bind="text:duration"></td>
+                        <td>
+                            <button class="btn btn-medium" data-bind="click:$parent.trash"><i class="icon-remove"></i></button>
+                            <button class="btn btn-medium" data-bind="click:$parent.edit"><i class="icon-pencil"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
