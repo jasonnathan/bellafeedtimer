@@ -55,7 +55,7 @@ function Timer() {
 
     self.exit = function(){
         return device.exitApp();
-    }
+    };
 
     self.add = function(d){
         d && typeof d === moment || (d=moment(d));
@@ -63,8 +63,11 @@ function Timer() {
         return d.add('m', 5);
     }
     self.addToStart = function(){
-        var cs = self.currentSession();
-        return cs && cs.started(self.add(cs.started()));
+        var cs = self.currentSession(), e = cs.ended(), t = cs && self.add(cs.started());
+        if(e && moment(t).isAfter(e)){
+            return false;
+        }
+        return cs && cs.started(t);
     };
     self.addToEnd = function(){
         var cs = self.currentSession();
@@ -80,8 +83,11 @@ function Timer() {
         return cs && cs.started(self.subtract(cs.started()));
     };
     self.subtractFromEnd = function(){
-        var cs = self.currentSession();
-        return cs && cs.ended(self.subtract(cs.ended()));
+        var cs = self.currentSession(), s = cs.started(), t = cs && self.subtract(cs.ended());
+        if(s && moment(t).isBefore(s)){
+            return false;
+        }
+        return cs && cs.ended(t);
     };
 
     setInterval(self.tick, 1e3);
