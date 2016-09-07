@@ -1,1 +1,4 @@
-/nbproject/private/
+node_modules/
+.vscode
+.DS_Store
+.meteor/local
