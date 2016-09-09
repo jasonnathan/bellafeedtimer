@@ -22,7 +22,7 @@ export default class RecordButton extends React.Component {
           </Button>
          :
         (
-          <Button onClick={this.props.handler} id={elementId} className="recordButton" modifier="outline large" ripple>
+          <Button onClick={this.handler} id={elementId} className="recordButton" modifier="outline large" ripple>
             <img src="/feed-left.svg" height="50px" alt={"Record " + elementText + " Feed"} />
             <small>{elementText}</small>
           </Button>

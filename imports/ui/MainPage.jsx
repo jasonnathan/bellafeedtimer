@@ -33,7 +33,7 @@ class MainPage extends Tracker.Component {
         setInterval( () => {
           let session = this.getCurrentSession();
           if(session){
-            session.duration = session.durationSeconds()
+            session.duration = session.durationMilliseconds()
           }
 
         }, 1e3);
