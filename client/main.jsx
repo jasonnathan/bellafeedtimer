@@ -1,3 +1,4 @@
+/*global document*/
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
@@ -7,6 +8,8 @@ import ons from 'onsenui';
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components-dark-theme.css';
 // import 'onsenui/stylus/blue-theme.styl';
+
+
 import '../imports/ui/styles/Main.styl';
 import App from '../imports/ui/App.jsx';
 

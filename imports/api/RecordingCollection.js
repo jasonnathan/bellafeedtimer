@@ -4,7 +4,7 @@ import {
 import _ from 'underscore';
 import moment from 'moment';
 
-export default class RecordingCollection extends Mongo.Collection {
+export class RecordingCollection extends Mongo.Collection {
   constructor(collectionName) {
     super(collectionName);
   }
@@ -15,19 +15,21 @@ export default class RecordingCollection extends Mongo.Collection {
   }
 
   insertSession(session, callback) {
-    if(typeof session !== 'object'){
+    if (typeof session !== 'object') {
       throw new Error("Session must be an object with a valid _id");
     }
     let existing = super.findOne(this.Id);
-    if(existing){
+    if (existing) {
       let query = {
-        _id: this.Id
-      }, modifier = {
-        $set: {
-        }
-      };
-      if(existing.sessions.length){
-        if(_.findWhere(existing.sessions, {_id: session._id})){
+          _id: this.Id
+        },
+        modifier = {
+          $set: {}
+        };
+      if (existing.sessions.length) {
+        if (_.findWhere(existing.sessions, {
+            _id: session._id
+          })) {
           query['sessions._id'] = session._id;
           modifier = {
             $set: {
@@ -43,8 +45,8 @@ export default class RecordingCollection extends Mongo.Collection {
         $addToSet: {
           sessions: session
         },
-        $inc:{
-          'counts.duration': session.duration,
+        $inc: {
+          'counts.duration': session.duration || 0,
           'counts.sessions': 1
         }
       }, callback);
@@ -53,32 +55,39 @@ export default class RecordingCollection extends Mongo.Collection {
     return super.insert({
       _id: this.Id,
       sessions: [session],
-      counts:{
+      counts: {
         duration: 0,
         sessions: 1
       }
     })
   }
 
-  updateSession(selector, session, callback) {
-    if(typeof session !== 'object'){
+  updateSession(session, callback) {
+    if (typeof session !== 'object') {
       throw new Error("Session must be an object with a valid _id");
     }
-    return super.update({
-      _id: this.Id,
-      'sessions._id': session._id
-    }, {
-      $set: {
-        'sessions.$': session
+    session.duration = session.duration && session.duration > 1e3 ? session.duration : 0;
+    let update = {
+        $set: {},
+        $inc: {
+          'counts.duration': session.duration
+        }
       },
-      $inc: {
-        'counts.duration': session.duration || 0
+      k;
+    for (k in session) {
+      if (session[k]) {
+        update.$set['sessions.$.' + k] = session[k];
       }
-    }, callback);
+    }
+
+    return super.update({
+      _id: session.dayId || this.Id,
+      'sessions._id': session._id
+    }, update, callback);
   }
 
   removeSession(session, callback) {
-    if(typeof session !== 'object'){
+    if (typeof session !== 'object') {
       throw new Error("Session must be an object with a valid _id");
     }
     return this.update({
@@ -96,3 +105,5 @@ export default class RecordingCollection extends Mongo.Collection {
     }, callback);
   }
 }
+
+export const Recordings = new RecordingCollection('meteor');

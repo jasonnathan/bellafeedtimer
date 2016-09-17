@@ -10,18 +10,24 @@ import moment from 'moment';
 import Tracker from 'tracker-component';
 import _ from 'underscore';
 
-import {Session, Recordings} from '../api/Session.js';
+import {Recordings} from '../api/RecordingCollection.js';
 
 import RecordingList from './RecordingList.jsx';
 
 import RecordButton from './RecordButton.jsx';
+
+import Store from '/imports/client/Store';
+import {startRecording, stopRecording} from '/imports/client/Actions/currentSession';
+
+//Store.dispatch(startRecording({position: "LEFT"}));
+
 
 class MainPage extends Tracker.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            sessions: Recordings.find().fetch()
+            sessions: Recordings.find({_id: moment().format('YYYYMMDD')}).fetch()
         };
 
         this.autorun(()=> {

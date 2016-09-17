@@ -1,0 +1,47 @@
+RecordButton -> "A button that starts/stops a recording"
+  state:
+    Recording(Boolean) -> A flag used to change the button to recording
+    Duration(String) -> Only used when recording is true, used to display a timer in the button
+  actions
+    {
+      type: "START_RECORDING"
+      payload (position:"LEFT or RIGHT", id: "String", started: Date/Timestamp)
+    }
+    {
+      type: "STOP_RECORDING"
+      payload (position:"LEFT or RIGHT", id: "String", ended: Date/Timestamp)
+    }
+
+RecordField -> "Part of a form component that displays modifies a timestamp"
+  state:
+    start|end: Date/Timestamp -> Shows a text field with the current time
+  actions
+    {
+      type: "MODIFY_TIME"
+      payload (increment: Number -> A positive or negative int that show the modification)
+    }
+
+RecordForm -> "A form displaying the current recording when recording and editing"
+  state:
+    session: Object -> The current sessions with the timestamp and Ids
+  actions
+  {
+    type: "UPDATE_RECORDING"
+    payload (id: String, started|ended: Date/Timestamp)
+  }
+
+RecordList -> "A List of items that show the recordings for the day"
+  state: Sessions array
+  actions
+  {
+    type: "EDIT_RECORDING",
+    payload (id: String)
+  },
+  {
+    type: "DELETE_RECORDING",
+    payload: (id)
+  }
+
+RecordListHeader -> "A header indicating today and current stats for the day"
+  state: Recording document
+  actions: none

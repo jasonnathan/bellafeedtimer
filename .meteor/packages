@@ -17,10 +17,10 @@ standard-minifier-js@1.2.0    # JS minifier run for production mode
 es5-shim@4.6.14                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.5.8              # Enable ECMAScript2015+ syntax in app code
 
-insecure                # Allow all DB writes from clients (for prototyping)
 shell-server
 stylus
 dburles:collection-helpers
 random
 aldeed:simple-schema
 practicalmeteor:mocha
+check

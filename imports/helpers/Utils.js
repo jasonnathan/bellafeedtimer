@@ -1,5 +1,7 @@
 import moment from 'moment';
-import { Observable } from './Observable.js';
+import {
+  Observable
+} from './Observable.js';
 
 export default class Utils {
   /**
@@ -9,14 +11,14 @@ export default class Utils {
    * @param Object data
    * @returns Object
    */
-  static toJS(data){
+  static toJS(data) {
     // we need an object
-    if(typeof data !== 'object')
+    if (typeof data !== 'object')
       throw new Error("Utils::toJS() needs an Object as first argument, " + typeof data + " given instead");
     // placeholder return object
     let ret = {}
-    // loop through keys
-    for(var v in data){
+      // loop through keys
+    for (var v in data) {
       // perform all the conversions
       ret[v] = Utils.doConversions(data[v]);
     }
@@ -33,7 +35,7 @@ export default class Utils {
    * @todo Make this method a little more automatic in conversion detection
    * @returns mixed
    */
-  static doConversions(val){
+  static doConversions(val) {
     val = Utils.convertObsvFuncs(val);
     val = Utils.convertMoment(val);
 
@@ -46,8 +48,8 @@ export default class Utils {
    *
    * @returns Date|Mixed
    */
-  static convertMoment(val){
-    if(moment.isMoment(val)){
+  static convertMoment(val) {
+    if (moment.isMoment(val)) {
       return val.toDate();
     }
     return val;
@@ -59,8 +61,8 @@ export default class Utils {
    *
    * @returns Mixed
    */
-  static convertObsvFuncs(val){
-    if(typeof val === Observable || typeof val === 'function'){
+  static convertObsvFuncs(val) {
+    if (typeof val === Observable || typeof val === 'function') {
       return val();
     }
     return val;
@@ -72,7 +74,23 @@ export default class Utils {
    * @param Object data
    * @returns Object
    */
-  static toJSON(data){
+  static toJSON(data) {
     return JSON.stringify(Utils.toJS(data), null, 2);
+  }
+
+  /**
+   * Simple diffing for 2 objects
+   *
+   * @param o1 {Object}
+   * @param o2 {Object}
+   */
+  static diff(o1, o2) {
+    Object.keys(o2)
+      .reduce((diff, key) => {
+        return (o1[key] === o2[key]) ? diff : {
+          ...diff,
+        [key]: o2[key]
+        }
+      }, {});
   }
 }

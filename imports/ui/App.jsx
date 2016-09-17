@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navigator } from 'react-onsenui';
-import MainPage from './MainPage';
+import MainPage from './MainPage.jsx';
 
 // App component - represents the whole app
 const App = () => {
