@@ -1,9 +1,9 @@
-import _ from 'underscore';
 import moment from 'moment';
 import {
   START_RECORDING,
   STOP_RECORDING,
-  UPDATE_RECORDING
+  UPDATE_RECORDING,
+  UPDATE_RECORDING_DURATION
 } from '../Actions/currentSession';
 
 const humanize = require('humanize-duration')
@@ -41,12 +41,12 @@ export default function currentSession(state = {
 
   switch (action.type) {
     case START_RECORDING:
-      return _.defaults({
+      return {
         _id,
         position,
         started,
         recording: true
-      }, state);
+      };
     case STOP_RECORDING:
       return Object.assign({
         _id, position, started, ended
@@ -65,6 +65,15 @@ export default function currentSession(state = {
         endTime: mEnd.format("LT"),
         duration, durationText
       });
+    case UPDATE_RECORDING_DURATION:
+      return Object.assign({
+        _id, position, started
+      }, state, {
+        recording: true,
+        startTime: mStart.format("LT"),
+        duration: moment().diff(moment(mStart)),
+        durationText: humanize(moment().diff(moment(mStart)))
+      })
   }
   return state;
 }

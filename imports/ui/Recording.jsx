@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { ListItem, Icon, Button } from 'react-onsenui';
 import ons from 'onsenui';
-
-import {Session} from '../api/Session.js';
+import Store from '/imports/client/Store';
+import {stopRecording} from '/imports/client/Actions/currentSession';
 
 const Recording = ({recording, onClick}) => {
   const deleteThisRecording = () => {
-    Recordings.remove(recording._id);
+    Store.dispatch(stopRecording(recording._id));
   };
   let modifier = "longdivider ";
   modifier += ons.platform.isAndroid() && 'material';
@@ -19,7 +19,7 @@ const Recording = ({recording, onClick}) => {
     >
       <div className="center" onClick={onClick} >
         <div className="ListItem">
-          {recording.text}
+          {recording.startTime}
         </div>
       </div>
       <Button

@@ -4,36 +4,44 @@
  * }
  */
 import {
-  Meteor
-} from 'meteor/meteor';
-import {
   Random
 } from 'meteor/random';
 
 export const START_RECORDING = "START_RECORDING";
 
-export function startRecording(session) {
-  const _ret = Object.assign({}, session, {
-    started: new Date,
-    _id: Random.id()
-  }),
-  {started, _id, position} = _ret;
+export function startRecording(position) {
+  const _ret = {
+      started: new Date,
+      _id: Random.id(),
+    },
+    {
+      started,
+      _id
+    } = _ret;
 
   return {
-    type: START_RECORDING, _id, position, started
+    type: START_RECORDING,
+    _id,
+    position,
+    started
   };
 }
 
 export const STOP_RECORDING = "STOP_RECORDING";
 
-export function stopRecording(session) {
-  const _ret = Object.assign({}, session, {
-    ended: new Date
-  }),
-  {_id, ended} = _ret;
+export function stopRecording(_id) {
+  const _ret = Object.assign({}, {
+      ended: new Date,
+      _id
+    }),
+    {
+      ended
+    } = _ret;
 
   return {
-    type: STOP_RECORDING, _id, ended
+    type: STOP_RECORDING,
+    _id,
+    ended
   }
 }
 
@@ -83,5 +91,13 @@ export function setErrorRecording(actionType, currentSession) {
     requestType: actionType,
     currentSession,
     recievedAt: Date.now()
+  }
+}
+
+export const UPDATE_RECORDING_DURATION = "UPDATE_RECORDING_DURATION";
+
+export function updateRecordingDuration() {
+  return {
+    type: UPDATE_RECORDING_DURATION
   }
 }
