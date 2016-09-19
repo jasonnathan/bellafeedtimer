@@ -10,8 +10,7 @@ export class RecordingCollection extends Mongo.Collection {
   }
 
   get Id() {
-    return moment()
-      .format('YYYYMMDD');
+    return moment().format('YYYYMMDD');
   }
 
   insertSession(session, callback) {
@@ -75,7 +74,7 @@ export class RecordingCollection extends Mongo.Collection {
       },
       k;
     for (k in session) {
-      if (session[k]) {
+      if (typeof session[k] !== undefined) {
         update.$set['sessions.$.' + k] = session[k];
       }
     }
