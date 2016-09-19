@@ -15,7 +15,9 @@ class RecordButton extends Component {
     tick(){
       if(this.props.recording){
         if(this.interval <= 0)
-          this.interval = setInterval(() => this.props.dispatch(updateRecordingDuration()), 1e3);
+          this.interval = setInterval(
+            () => this.props.dispatch(updateRecordingDuration()
+          ), 1e3);
       } else {
         clearInterval(this.interval);
         this.interval = 0;
@@ -26,6 +28,9 @@ class RecordButton extends Component {
     }
     get elementText(){
       return this.props.position === "LEFT" ? "Left" : "Right";
+    }
+    get invertedImageClassName(){
+      return this.props.position === "LEFT" ? "" : "imgMirror";
     }
     render() {
         this.tick();
@@ -49,7 +54,12 @@ class RecordButton extends Component {
             modifier="outline large"
             ripple
           >
-            <img src="/feed-left.svg" height="50px" alt={"Record " + this.elementText + " Feed"} />
+            <img
+              src="/feed-left.svg"
+              height="50px"
+              className={this.invertedImageClassName}
+              alt={"Record " + this.elementText + " Feed"}
+            />
             <small>{this.elementText}</small>
           </Button>
         )
@@ -67,7 +77,7 @@ RecordButton.propTypes = {
 const mapStateToProps = (state, ownProps) => {
   let cs = state.currentSession;
   return {
-    durationText: cs.durationText,
+    durationText: cs.durationText || "0s",
     recording: cs.recording && cs.position === ownProps.position
   };
 };
