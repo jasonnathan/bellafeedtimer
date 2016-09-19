@@ -1,16 +1,63 @@
-// import Tracker from 'tracker-component';
-// import moment from "moment";
-// import React, {PropTypes} from 'react';
-// import {List, ListHeader} from 'react-onsenui';
-//
+import React, {PropTypes} from 'react';
+import Tracker from 'tracker-component';
+import {connect} from 'react-redux';
+import {List, ListHeader} from 'react-onsenui';
+import {TodayObserver} from '/imports/api/TodayObserver';
+import {fetchTodayAsync} from '../Actions/currentDay';
 // import RecordingDetailsPage from './RecordingDetailsPage.jsx';
 // import Recording from './Recording.jsx';
 //
-// class ReactiveRecordings extends Tracker.Component {
-//     constructor(props) {
-//         super(props);
-//     }
-//
+class RecordingList extends Tracker.Component {
+  constructor(props) {
+    super(props);
+    this._subs = [
+      this.subscribe("fetchToday"),
+      TodayObserver
+    ];
+  }
+
+  componentDidMount(){
+    this.props.dispatch(fetchTodayAsync());
+  }
+
+  componentWillUnmount(){
+    this._subs.map(s => s && s.stop());
+  }
+
+  renderRecording(){
+    // return (<Recording key={recording._id} onClick={() => recordingClickHandler(index)} recording={recording}/>);
+    return ("Recording");
+  }
+
+  render(){
+    return (
+      <List
+        dataSource={this.props.sessions}
+        renderRow={this.renderRecording}
+        renderHeader={() =>
+          <ListHeader style={{color: '#444'}}>
+            {this.props.currentDay.counts.sessions}
+          </ListHeader>}
+      />);
+  }
+}
+
+RecordingList.propTypes = {
+  currentDay: PropTypes.object,
+  sessions: PropTypes.array,
+  dispatch: PropTypes.func
+};
+
+const mapStateToProps = (state) => {
+  let cd = state.currentDay;
+  return {
+    currentDay: cd,
+    sessions: cd.sessions || []
+  };
+};
+
+export default connect(mapStateToProps)(RecordingList);
+
 //     const RecordingList = ({
 //         recordings = [],
 //         navigator
