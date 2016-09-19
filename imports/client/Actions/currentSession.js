@@ -1,6 +1,6 @@
 /**
  * state = {
- *    currentMonth, currentDay, currentRecording
+ *   currentSession
  * }
  */
 import {
@@ -8,44 +8,40 @@ import {
 } from 'meteor/random';
 
 export const START_RECORDING = "START_RECORDING";
+export const STOP_RECORDING = "STOP_RECORDING";
+export const UPDATE_RECORDING = "UPDATE_RECORDING";
+export const DELETE_RECORDING = "DELETE_RECORDING";
+export const SET_EDIT_RECORDING = "SET_EDIT_RECORDING";
+export const UPDATE_RECORDING_DURATION = "UPDATE_RECORDING_DURATION";
 
+/**
+ * Begins a recording session. Generates an id and appends the current time.
+ *
+ * @param  {String} position Left or Right buttone pressed
+ * @return {Object}          Returns an object with {type, _id, started, position}
+ */
 export function startRecording(position) {
-  const _ret = {
-      started: new Date,
-      _id: Random.id(),
-    },
-    {
-      started,
-      _id
-    } = _ret;
-
   return {
     type: START_RECORDING,
-    _id,
+    _id: Random.id(),
     position,
-    started
+    started: new Date
   };
 }
 
-export const STOP_RECORDING = "STOP_RECORDING";
-
+/**
+ * Stops a recording with a given id and appends the current time
+ *
+ * @param  {String} _id The _id of the session (normally the one recording)
+ * @return {Object}     Returns an object with {type, _id, ended}
+ */
 export function stopRecording(_id) {
-  const _ret = Object.assign({}, {
-      ended: new Date,
-      _id
-    }),
-    {
-      ended
-    } = _ret;
-
   return {
     type: STOP_RECORDING,
     _id,
-    ended
+    ended: new Date
   }
 }
-
-export const UPDATE_RECORDING = "UPDATE_RECORDING";
 
 export function updateRecording(session) {
   // started, ended, position, _id
@@ -54,8 +50,6 @@ export function updateRecording(session) {
   }, session);
 }
 
-export const DELETE_RECORDING = "DELETE_RECORDING";
-
 export function deleteRecording(_id) {
   return {
     type: DELETE_RECORDING,
@@ -63,38 +57,12 @@ export function deleteRecording(_id) {
   }
 }
 
-export const SET_EDIT_RECORDING = "SET_EDIT_RECORDING";
-
 export function setEditRecording(_id) {
   return {
     type: SET_EDIT_RECORDING,
     _id
   };
 }
-
-export const SET_SUCCESS_RECORDING = "SET_SUCCESS_RECORDING";
-
-export function setSuccessFulRecording(actionType, currentSession) {
-  return {
-    type: SET_SUCCESS_RECORDING,
-    requestType: actionType,
-    currentSession,
-    recievedAt: Date.now()
-  }
-}
-
-export const SET_ERROR_RECORDING = "SET_ERROR_RECORDING";
-
-export function setErrorRecording(actionType, currentSession) {
-  return {
-    type: SET_ERROR_RECORDING,
-    requestType: actionType,
-    currentSession,
-    recievedAt: Date.now()
-  }
-}
-
-export const UPDATE_RECORDING_DURATION = "UPDATE_RECORDING_DURATION";
 
 export function updateRecordingDuration() {
   return {
