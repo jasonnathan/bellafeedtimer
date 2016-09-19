@@ -3,13 +3,15 @@ import diff from 'object-diff';
 
 const persist = store => next => action => {
   const prev = store.getState();
-  let result = next(action)
+  let result = next(action);
+  let nextState = store.getState();
   Meteor.call('updateState', {
     action,
     diff: {
-      currentSession: diff(prev.currentSession, store.getState().currentSession)
+      currentSession: diff(prev.currentSession, nextState.currentSession),
+      currentDay: diff(prev.currentDay, nextState.currentDay)
     },
-    next: store.getState()
+    next: nextState
   }, () => result);
 }
 export default persist;
