@@ -18,5 +18,6 @@ Meteor.startup(() => {
     ons.ready(() => render(
       <Provider store={Store}>
         <App />
-      </Provider>, document.getElementById('render-target')));
+      </Provider>, document.getElementById('render-target')
+    ));
 });
