@@ -10,8 +10,6 @@ import {
 export const START_RECORDING = "START_RECORDING";
 export const STOP_RECORDING = "STOP_RECORDING";
 export const UPDATE_RECORDING = "UPDATE_RECORDING";
-export const DELETE_RECORDING = "DELETE_RECORDING";
-export const SET_EDIT_RECORDING = "SET_EDIT_RECORDING";
 export const UPDATE_RECORDING_DURATION = "UPDATE_RECORDING_DURATION";
 
 /**
@@ -48,20 +46,6 @@ export function updateRecording(session) {
   return Object.assign({}, {
     type: UPDATE_RECORDING
   }, session);
-}
-
-export function deleteRecording(_id) {
-  return {
-    type: DELETE_RECORDING,
-    _id
-  }
-}
-
-export function setEditRecording(_id) {
-  return {
-    type: SET_EDIT_RECORDING,
-    _id
-  };
 }
 
 export function updateRecordingDuration() {

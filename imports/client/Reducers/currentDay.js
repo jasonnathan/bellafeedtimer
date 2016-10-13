@@ -5,6 +5,8 @@ import {
   REQUESTED_TODAY,
   RECEIVED_TODAY,
   ERROR_FETCHING_TODAY,
+  DELETE_RECORDING,
+  SET_EDIT_RECORDING,
   UPDATE_TODAY
 } from '../Actions/currentDay';
 
@@ -29,7 +31,7 @@ export default function currentDay(state = {
     };
   case RECEIVED_TODAY:
     return {...state,
-      ...action.currentDay,
+      ...action.currentDay || state,
       isError: false,
       isFetching: false,
       err: null
@@ -43,6 +45,11 @@ export default function currentDay(state = {
     return {
       ...state,
       ...action.payload
+    }
+  case DELETE_RECORDING:
+    return {
+      ...state,
+      sessions: reject(state.sessions, (s) => s._id === action._id)
     }
   }
   return state;

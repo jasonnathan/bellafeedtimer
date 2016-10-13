@@ -1,7 +1,15 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
-import { Page, Toolbar, Row, Col } from 'react-onsenui';
-import { startRecording, stopRecording } from '../Actions/currentSession.js';
+import React, {
+  PropTypes, Component
+} from 'react';
+import {
+  connect
+} from 'react-redux';
+import {
+  Page, Toolbar, Row, Col
+} from 'react-onsenui';
+import {
+  startRecording, stopRecording
+} from '../Actions/currentSession.js';
 import RecordButton from './RecordButton.jsx';
 import RecordingList from './RecordingList.jsx';
 

@@ -11,6 +11,9 @@ export const REQUESTED_TODAY = "REQUESTED_TODAY";
 export const RECEIVED_TODAY = "RECEIVED_TODAY";
 export const ERROR_FETCHING_TODAY = "ERROR_FETCHING_TODAY";
 export const UPDATE_TODAY = "UPDATE_TODAY";
+export const UPDATE_RECORDING = "UPDATE_RECORDING";
+export const DELETE_RECORDING = "DELETE_RECORDING";
+export const SET_EDIT_RECORDING = "SET_EDIT_RECORDING";
 
 export function updateInToday(payload) {
   return {
@@ -18,6 +21,21 @@ export function updateInToday(payload) {
     payload
   }
 }
+
+export function deleteRecording(_id) {
+  return {
+    type: DELETE_RECORDING,
+    _id
+  }
+}
+
+export function setEditRecording(_id) {
+  return {
+    type: SET_EDIT_RECORDING,
+    _id
+  };
+}
+
 
 export function fetchTodayAsync() {
   return dispatch => {
@@ -31,7 +49,7 @@ export function fetchTodayAsync() {
           err
         });
 
-      return currentDay && dispatch({
+      return dispatch({
         type: RECEIVED_TODAY,
         currentDay
       })

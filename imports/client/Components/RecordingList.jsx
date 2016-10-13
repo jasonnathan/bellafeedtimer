@@ -1,9 +1,12 @@
 import React, {PropTypes} from 'react';
 import Tracker from 'tracker-component';
 import {connect} from 'react-redux';
-import {List, ListHeader} from 'react-onsenui';
+import ons from 'onsenui';
+import {List} from 'react-onsenui';
 import {TodayObserver} from '/imports/api/TodayObserver';
 import {fetchTodayAsync} from '../Actions/currentDay';
+import RecordingListHeader from './RecordingListHeader.jsx';
+import Recording from './Recording.jsx';
 // import RecordingDetailsPage from './RecordingDetailsPage.jsx';
 // import Recording from './Recording.jsx';
 //
@@ -14,6 +17,7 @@ class RecordingList extends Tracker.Component {
       this.subscribe("fetchToday"),
       TodayObserver
     ];
+    // this.renderRecording = this.renderRecording.bind(this);
   }
 
   componentDidMount(){
@@ -24,21 +28,24 @@ class RecordingList extends Tracker.Component {
     this._subs.map(s => s && s.stop());
   }
 
-  renderRecording(){
-    // return (<Recording key={recording._id} onClick={() => recordingClickHandler(index)} recording={recording}/>);
-    return ("Recording");
+  viewRecording(row){
+    console.log(row);
+  }
+
+  renderRecording(row){
+    return (<Recording key={row._id} recording={row} />);
   }
 
   render(){
     return (
       <List
+        // length={10}
+        // calculateItemHeight={() => ons.platform.isAndroid() ? 60 : 60}
         dataSource={this.props.sessions}
         renderRow={this.renderRecording}
-        renderHeader={() =>
-          <ListHeader style={{color: '#444'}}>
-            {this.props.currentDay.counts.sessions}
-          </ListHeader>}
-      />);
+        renderHeader={() => (<RecordingListHeader />)}
+      />
+    );
   }
 }
 
