@@ -1,44 +1,53 @@
-import {
-  Meteor
-} from 'meteor/meteor';
-import {
-  Mongo
-} from 'meteor/mongo';
-import {
-  // Match,
-  check
-} from 'meteor/check';
+import {Meteor} from 'meteor/meteor'; // eslint-disable-line
+import {Mongo} from 'meteor/mongo'; // eslint-disable-line
+import {check} from 'meteor/check'; // eslint-disable-line
 
 import moment from 'moment';
 
-import {
-  Recordings
-} from '../RecordingCollection';
+import {Recordings} from '../RecordingCollection';
 
-const State = new Mongo.Collection('state');
+const State: Object = new Mongo.Collection('state');
+let _initialising: Boolean = true;
+
 Meteor.methods({
-  updateState(_obj) {
+  updateState(_obj: Object = {}) {
     check(_obj, Object);
-    return State.insert({..._obj, ts: new Date});
+    return State.insert({
+      ..._obj,
+      ts: new Date
+    });
   },
-  fetchToday() {
-    console.log(Recordings.findOne({_id: moment().format('YYYYMMDD')}));
+  fetchToday(): ?Object {
     return Recordings.findOne({_id: moment().format('YYYYMMDD')})
   }
 });
 
-State.find()
-  .observe({
-    added(doc) {
-      const type = doc.action.type;
+State.find().observe({
+  added(doc: Object = {}) {
+    const type: String = doc.action.type,
+      cs: Object = doc.next.currentSession,
+      sessionsPrevious: Array = doc.prev.currentDay.sessions,
+      sessionsCurrent: Array = doc.next.currentDay.sessions;
+
+    if (!_initialising)
       switch (type) {
         case 'START_RECORDING':
-          return Recordings.insertSession(doc.next.currentSession);
+          return Recordings.insertSession(cs);
         case 'STOP_RECORDING':
         case 'UPDATE_RECORDING':
-          return Recordings.updateSession(doc.next.currentSession);
-        case 'DELETE_RECORDING':
-          return Recordings.removeSession(doc.next.currentSession);
+          return Recordings.updateSession(cs);
+        case 'DELETE_RECORDING':{
+          // since this action is performed on a day document, we need to
+          // extract the difference between the previous and current session
+          // arrays in order to effect it in the database;
+          let d = sessionsPrevious.filter(i => sessionsCurrent.indexOf(i) < 0);
+          if(d.length){
+            return Recordings.removeSession(d[0]);
+          }
+        }
+
       }
     }
-  })
+});
+
+_initialising = false;
