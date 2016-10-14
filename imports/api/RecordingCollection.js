@@ -1,11 +1,10 @@
 import {
   Mongo
-} from 'meteor/mongo';
-import _ from 'underscore';
+} from 'meteor/mongo'; // eslint-disable-line
 import moment from 'moment';
 
 export class RecordingCollection extends Mongo.Collection {
-  constructor(collectionName) {
+  constructor(collectionName: String) {
     super(collectionName);
   }
 
@@ -13,10 +12,7 @@ export class RecordingCollection extends Mongo.Collection {
     return moment().format('YYYYMMDD');
   }
 
-  insertSession(session, callback) {
-    if (typeof session !== 'object') {
-      throw new Error("Session must be an object with a valid _id");
-    }
+  insertSession(session: Object = {}, callback: ?Function) {
     let existing = super.findOne(this.Id);
     if (existing) {
       let query = {
@@ -26,9 +22,7 @@ export class RecordingCollection extends Mongo.Collection {
           $set: {}
         };
       if (existing.sessions.length) {
-        if (_.findWhere(existing.sessions, {
-            _id: session._id
-          })) {
+        if ( existing.sessions.find( s => s._id === session._id) ) {
           query['sessions._id'] = session._id;
           modifier = {
             $set: {
@@ -58,10 +52,10 @@ export class RecordingCollection extends Mongo.Collection {
         duration: 0,
         sessions: 1
       }
-    })
+    });
   }
 
-  updateSession(session, callback) {
+  updateSession(session: Object = {}, callback: ?Function) {
     if (typeof session !== 'object') {
       throw new Error("Session must be an object with a valid _id");
     }
@@ -74,7 +68,7 @@ export class RecordingCollection extends Mongo.Collection {
       },
       k;
     for (k in session) {
-      if (typeof session[k] !== undefined) {
+      if (typeof session[k] !== "undefined") {
         update.$set['sessions.$.' + k] = session[k];
       }
     }
@@ -85,11 +79,11 @@ export class RecordingCollection extends Mongo.Collection {
     }, update, callback);
   }
 
-  removeSession(session, callback) {
-    if (typeof session !== 'object') {
+  removeSession(session: Object = {}, callback: ?Function) {
+    if (typeof session !== 'object' || !session.hasOwnProperty("_id")) {
       throw new Error("Session must be an object with a valid _id");
     }
-    return this.update({
+    return super.update({
       _id: this.Id
     }, {
       $pull: {
