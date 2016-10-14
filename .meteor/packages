@@ -21,3 +21,5 @@ aldeed:simple-schema
 practicalmeteor:mocha
 check@1.2.3
 static-html@1.1.12_1
+stylus
+mobile-status-bar
