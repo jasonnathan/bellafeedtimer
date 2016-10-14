@@ -49,7 +49,7 @@ export default function currentDay(state = {
   case DELETE_RECORDING:
     return {
       ...state,
-      sessions: reject(state.sessions, (s) => s._id === action._id)
+      sessions: reject(state.sessions, s => s._id === action._id)
     }
   }
   return state;
