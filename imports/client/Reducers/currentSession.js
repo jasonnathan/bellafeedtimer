@@ -4,7 +4,8 @@ import {
   START_RECORDING,
   STOP_RECORDING,
   UPDATE_RECORDING_DURATION,
-  UPDATE_RECORDING
+  UPDATE_RECORDING,
+  UNSET_CURRENT_RECORDING
 } from '../Actions/currentSession';
 
 
@@ -46,6 +47,12 @@ export default function currentSession(state = {
         duration: moment().diff(moment(mStart)),
         durationText: Humanize(moment().diff(moment(mStart)))
       };
+    // when a recording is deleted from the current day, this must return an
+    // empty object so that recording won't continue and total duration
+    // is valid
+    case UNSET_CURRENT_RECORDING:{
+      return {recording: false};
+    }
   }
   return state;
 }
