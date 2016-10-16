@@ -1,12 +1,9 @@
 import moment from 'moment';
-import reject from 'lodash.reject';
-import map from 'lodash.map';
 import {
   REQUESTED_TODAY,
   RECEIVED_TODAY,
   ERROR_FETCHING_TODAY,
   DELETE_RECORDING,
-  SET_EDIT_RECORDING,
   UPDATE_TODAY
 } from '../Actions/currentDay';
 
@@ -49,7 +46,7 @@ export default function currentDay(state = {
   case DELETE_RECORDING:
     return {
       ...state,
-      sessions: reject(state.sessions, s => s._id === action._id)
+      sessions: state.sessions.filter(s => s._id === action._id)
     }
   }
   return state;
