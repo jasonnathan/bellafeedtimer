@@ -35,8 +35,11 @@ export class RecordingCollection extends Mongo.Collection {
       return super.update({
         _id: this.Id
       }, {
-        $addToSet: {
-          sessions: session
+        $push: {
+          sessions: {
+             $each: [ session ],
+             $position: 0
+          }
         },
         $inc: {
           'counts.duration': session.duration || 0,

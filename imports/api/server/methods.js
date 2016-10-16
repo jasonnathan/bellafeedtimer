@@ -39,7 +39,9 @@ State.find().observe({
         case 'DELETE_RECORDING':{
           // since this action is performed on a day document, we need to
           // extract the difference between the previous and current session
-          // arrays in order to effect it in the database;
+          // arrays in order to extract the ids and durations of the respective
+          // Alternatively, a simple findAndModify would have done the job,
+          // but meteor doesn't expose it and I am just lazy...
           let d = sessionsPrevious.filter(i => sessionsCurrent.indexOf(i) < 0);
           if(d.length){
             return Recordings.removeSession(d[0]);
