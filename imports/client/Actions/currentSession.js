@@ -11,6 +11,7 @@ export const START_RECORDING = "START_RECORDING";
 export const STOP_RECORDING = "STOP_RECORDING";
 export const UPDATE_RECORDING = "UPDATE_RECORDING";
 export const UPDATE_RECORDING_DURATION = "UPDATE_RECORDING_DURATION";
+export const UNSET_CURRENT_RECORDING = "UNSET_CURRENT_RECORDING";
 
 /**
  * Begins a recording session. Generates an id and appends the current time.
@@ -51,5 +52,11 @@ export function updateRecording(session) {
 export function updateRecordingDuration() {
   return {
     type: UPDATE_RECORDING_DURATION
+  }
+}
+
+export function unsetCurrentRecording(){
+  return {
+    type: UNSET_CURRENT_RECORDING
   }
 }
