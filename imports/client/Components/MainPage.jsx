@@ -40,7 +40,7 @@ class MainPage extends Component {
   get debugText() {
     const {currentSession} = this.props;
       return currentSession
-        ? JSON.stringify(currentSession, null, 2 ) + "\nNumber of sessions: "
+        ? JSON.stringify(currentSession, null, 2 ) + "\nNumber of sessions: " + this.props.counts.sessions + "\nTotal Duration: " + this.props.counts.duration
         : "";
   }
 
@@ -53,7 +53,7 @@ class MainPage extends Component {
   render() {
     return (
       <Page renderToolbar={this.renderToolbar}>
-        <Row style={{ minHeight: '100px'}}>
+        <Row style={{paddingTop:'10px'}}>
           <Col verticalAlign="center" className="mainButtonContainer left">
             <RecordButton handler={this.onRecordClick} position="LEFT" />
           </Col>
@@ -62,12 +62,7 @@ class MainPage extends Component {
             <RecordButton handler={this.onRecordClick} position="RIGHT" />
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <RecordingList navigator={this.navigator} />
-            <pre style={{padding: '1rem'}}> <small>{this.debugText}</small></pre>
-          </Col>
-        </Row>
+        <RecordingList navigator={this.navigator} />
       </Page>
     );
   }
@@ -81,7 +76,8 @@ MainPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    currentSession: state.currentSession
+    currentSession: state.currentSession,
+    counts: state.currentDay.counts
   };
 };
 
