@@ -1,15 +1,34 @@
 import React, { PropTypes } from 'react';
-import { ListItem, Icon, Button } from 'react-onsenui';
+import { ListItem, Icon, Button, Row, Col } from 'react-onsenui';
 import ons from 'onsenui';
 import {deleteRecording} from '../Actions/currentDay';
+import {unsetCurrentRecording} from '../Actions/currentSession';
 import Store from '../Store';
 
-const Recording = ({recording}) => {
+const Recording = ({session}) => {
   let modifier = "longdivider ";
   modifier += ons.platform.isAndroid() && 'material';
 
   const removeItem = () => {
-    return Store.dispatch(deleteRecording(recording._id))
+    Store.dispatch(deleteRecording(session._id));
+    return Store.dispatch(unsetCurrentRecording());
+  }
+
+  const renderDeleteButton = () => {
+    if(!session.recording){
+      return (
+        <Button
+          modifier="light"
+          ripple
+          className="btn blackButton"
+          onClick={removeItem}
+        >
+          <Icon
+            icon={{default: 'ion-ios-close-outline'}}
+          />
+        </Button>
+      );
+    }
   }
   return (
     <ListItem
@@ -17,25 +36,20 @@ const Recording = ({recording}) => {
     >
       <div className="center">
         <div className="ListItem">
-          {recording.startTime}
+          <Row>
+            <Col><h5>{session.position}</h5></Col>
+            <Col><small><time dateTime={session.started}>{session.startTime}</time></small></Col>
+            <Col><small>{session.durationText}</small></Col>
+            <Col style={{textAlign:'right'}}>{renderDeleteButton()}</Col>
+          </Row>
         </div>
       </div>
-      <Button
-        modifier="light"
-        ripple
-        className="right btn blackButton"
-        onClick={removeItem}
-      >
-        <Icon
-          icon={{default: 'ion-android-close'}}
-        />
-      </Button>
     </ListItem>
   );
 };
 
 Recording.propTypes = {
-  recording: PropTypes.object.isRequired,
+  session: PropTypes.object.isRequired,
   view: PropTypes.func,
   remove: PropTypes.func
 };
