@@ -1,5 +1,5 @@
-# Onsen UI + Meteor
+[![Code Climate](https://codeclimate.com/github/jasonnathan/bellafeedtimer/badges/gpa.svg)](https://codeclimate.com/github/jasonnathan/bellafeedtimer)
 
-This is a simple example of React Onsen UI working with Meteor out of the box. This app is based on the official [React-Meteor Todo app](https://www.meteor.com/tutorials/react/creating-an-app) tutorial.
+This is a rewrite of an application I wrote for my wife when our child was born. She never got to use this version (yet?). I used the solution to experiment with React, Redux and Meteor with a UI powered by OnsenUI. 
 
-Check this app working here: https://onsenui-meteor-todos.herokuapp.com/
+The data layer is powered by MongoDB and I think it Redux absolutely Rocks!
